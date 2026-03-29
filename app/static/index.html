@@ -19,39 +19,74 @@
             >
           </nav>
         </header>
+        <div
+          class="control-panel"
+          style="
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fff;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+          "
+        >
+          <p style="margin: 0 0 10px 0; font-weight: bold">System Controls</p>
+
+          <button
+            id="modeToggle"
+            class="mode-btn batch-mode"
+            style="
+              padding: 10px 20px;
+              font-weight: bold;
+              cursor: pointer;
+              border: none;
+              border-radius: 5px;
+              color: white;
+              margin-right: 10px;
+            "
+          >
+            ⚡ Batch Mode (Redis Queue)
+          </button>
+
+          <button
+            id="stressTestBtn"
+            style="
+              padding: 10px 20px;
+              font-weight: bold;
+              cursor: pointer;
+              border: none;
+              border-radius: 5px;
+              background-color: #ff9800;
+              color: white;
+            "
+          >
+            🔥 Run Users Stress Test
+          </button>
+        </div>
 
         <main>
           <h2>Tất cả Sản phẩm</h2>
           <div class="product-grid">
             <div class="product-card">
-              <img src="https://via.placeholder.com/150" alt="Sản phẩm 1" />
+              <img src="./image/aothun.png" alt="Sản phẩm 1" />
               <h3>Áo Thun Trắng</h3>
               <p>$20.00</p>
               <button class="add-to-cart" id="btn_cart_1">Thêm vào giỏ</button>
             </div>
             <div class="product-card">
-              <img
-                src="https://via.placeholder.com/150/0000FF"
-                alt="Sản phẩm 2"
-              />
+              <img src="./image/quan_jean.png" alt="Sản phẩm 2" />
               <h3>Quần Jean Xanh</h3>
               <p>$50.00</p>
               <button class="add-to-cart" id="btn_cart_2">Thêm vào giỏ</button>
             </div>
             <div class="product-card">
-              <img
-                src="https://via.placeholder.com/150/FF0000"
-                alt="Sản phẩm 3"
-              />
+              <img src="./image/mu_luoi_chai.png" alt="Sản phẩm 3" />
               <h3>Mũ Lưỡi Trai</h3>
               <p>$15.00</p>
               <button class="add-to-cart" id="btn_cart_3">Thêm vào giỏ</button>
             </div>
             <div class="product-card">
-              <img
-                src="https://via.placeholder.com/150/008000"
-                alt="Sản phẩm 4"
-              />
+              <img src="./image/ao_khoac.png" alt="Sản phẩm 4" />
               <h3>Áo Khoác</h3>
               <p>$75.00</p>
               <button class="add-to-cart" id="btn_cart_4">Thêm vào giỏ</button>

@@ -8,6 +8,45 @@ const sessionId = generateUUID();
 const API_URL = "http://localhost:8000/api/track";
 const currentUrl = window.location.pathname;
 
+// --- Add this block right below where you defined currentUrl ---
+let currentWriteMode = "batch";
+const modeToggleBtn = document.getElementById("modeToggle");
+
+modeToggleBtn.addEventListener("click", () => {
+  if (currentWriteMode === "batch") {
+    currentWriteMode = "direct";
+    modeToggleBtn.textContent = "🐢 Direct Mode (PostgreSQL Insert)";
+    modeToggleBtn.className = "mode-btn direct-mode";
+    console.log("Switched to Direct PostgreSQL mode");
+  } else {
+    currentWriteMode = "batch";
+    modeToggleBtn.textContent = "⚡ Batch Mode (Redis Queue)";
+    modeToggleBtn.className = "mode-btn batch-mode";
+    console.log("Switched to Redis Batch mode");
+  }
+});
+
+// --- Update your captureEvent function to include the mode ---
+async function captureEvent(eventType, metadata = {}) {
+  const payload = {
+    session_id: sessionId,
+    event_type: eventType,
+    url: currentUrl,
+    element_metadata: metadata,
+    write_mode: currentWriteMode, // <-- Added this line
+  };
+
+  try {
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch (error) {
+    console.error("Error sending tracking event:", error);
+  }
+}
+
 console.log(`Tracking started. Session: ${sessionId}`);
 
 // Ensure we track a 'VIEW' event immediately on load
@@ -141,7 +180,7 @@ function appendTerminalLog(data) {
   if (data.event_type === "click") {
     metaStr = `Target: ${data.element_metadata.button_text || data.element_metadata.element_id}`;
   } else if (data.event_type === "scroll") {
-    metaStr = `Depth: ${data.element_metadata.scroll_percent}`;
+    metaStr = `Depth: ${data.element_metadata.scroll_percent ? data.element_metadata.scroll_percent : "test"}`;
   } else if (data.event_type === "view") {
     metaStr = `URL: ${data.url}`;
   }
@@ -153,3 +192,54 @@ function appendTerminalLog(data) {
   terminalLog.appendChild(p);
   terminalLog.scrollTop = terminalLog.scrollHeight;
 }
+
+// --- Stress Test Logic ---
+const stressTestBtn = document.getElementById("stressTestBtn");
+
+var numOfStressTestEvents = 10;
+
+stressTestBtn.addEventListener("click", async () => {
+  stressTestBtn.disabled = true;
+  stressTestBtn.textContent = "⏳ Running...";
+
+  const pStart = document.createElement("p");
+  pStart.style.color = "#ff9800";
+  pStart.textContent = `[SYSTEM] Initiating stress test... ${numOfStressTestEvents} random events in ${currentWriteMode.toUpperCase()} mode.`;
+  terminalLog.appendChild(pStart);
+  terminalLog.scrollTop = terminalLog.scrollHeight;
+
+  try {
+    const response = await fetch("http://localhost:8000/api/stress-test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        write_mode: currentWriteMode,
+        count: numOfStressTestEvents,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server responded with status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    const pResult = document.createElement("p");
+    // If there are failed writes, show yellow (warning), otherwise green
+    pResult.style.color = result.failed_writes > 0 ? "#ffeb3b" : "#00ff00";
+    pResult.innerHTML = `[TEST COMPLETE] Mode: <b>${result.mode}</b><br>
+                             Time Taken: <b>${result.time_taken_seconds}s</b><br>
+                             Success: ${result.successful_writes} | Failed: <span style="color:#ff4444">${result.failed_writes}</span>`;
+    terminalLog.appendChild(pResult);
+  } catch (error) {
+    // Now errors will display in the terminal instead of failing silently
+    const pErr = document.createElement("p");
+    pErr.style.color = "#ff4444";
+    pErr.textContent = `[SYSTEM ERROR] Stress test failed: ${error.message}`;
+    terminalLog.appendChild(pErr);
+  } finally {
+    stressTestBtn.disabled = false;
+    stressTestBtn.textContent = `🔥 Run ${numOfStressTestEvents} Users Stress Test`;
+    terminalLog.scrollTop = terminalLog.scrollHeight;
+  }
+});

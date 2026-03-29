@@ -30,15 +30,16 @@ async def process_batch():
                         e.get("session_id"), 
                         e.get("user_id"), 
                         e.get("event_type"), 
-                        e.get("url"), 
+                        e.get("url"),
+                        e.get("write_mode"),
                         json.dumps(e.get("element_metadata", {}))
                     )
                     for e in events
                 ]
                 
                 query = """
-                    INSERT INTO clickstream_events (session_id, user_id, event_type, url, element_metadata)
-                    VALUES ($1, $2, $3, $4, $5::jsonb)
+                    INSERT INTO clickstream_events (session_id, user_id, event_type, url, write_mode, element_metadata)
+                    VALUES ($1, $2, $3, $4, $5, $6::jsonb)
                 """
                 
                 async with pool.acquire() as conn:

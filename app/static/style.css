@@ -55,8 +55,16 @@ html {
 }
 
 .product-card img {
+  /* Display all images inside a fixed-height box, show whole image without cropping */
+  height: 220px; /* consistent displayed height */
+  width: auto;
   max-width: 100%;
-  height: auto;
+  object-fit: contain; /* show full image with letterboxing if necessary */
+  object-position: center center;
+  display: block;
+  margin: 0 auto 12px;
+  border-radius: 6px;
+  background-color: #fff; /* gentle backdrop for small images */
 }
 
 .add-to-cart {
@@ -113,3 +121,11 @@ html {
 .log-event-view {
   color: #4caf50;
 } /* Green */
+
+/* Add to the bottom of your style.css */
+.batch-mode {
+  background-color: #4caf50;
+} /* Fast/Green */
+.direct-mode {
+  background-color: #f44336;
+} /* Slow/Red */
