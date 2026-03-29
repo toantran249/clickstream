@@ -1,0 +1,115 @@
+/* Base Page Settings */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* 50/50 Split View */
+.split-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Left Side: Mock Website Styling */
+.mock-website {
+  flex: 1; /* Occupies 50% */
+  padding: 20px;
+  background-color: #f4f4f4;
+  overflow-y: scroll; /* Allows the mock site to scroll independently */
+  box-sizing: border-box;
+}
+
+.mock-website header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.mock-website nav a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.product-card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+.add-to-cart {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Right Side: Terminal Console Styling */
+.live-console {
+  flex: 1; /* Occupies 50% */
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1a;
+  color: #00ff00; /* Hacker Green */
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  border-left: 2px solid #555;
+}
+
+.console-header {
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+.terminal {
+  flex: 1;
+  padding: 15px;
+  overflow-y: scroll; /* Auto-scroll logs */
+  white-space: pre-wrap; /* Keeps formatting */
+}
+
+/* Custom colors for terminal messages */
+.sys-msg {
+  color: #aaa;
+  font-style: italic;
+}
+.log-time {
+  color: #888;
+}
+.log-event-click {
+  color: #ffeb3b;
+  font-weight: bold;
+} /* Yellow */
+.log-event-scroll {
+  color: #2196f3;
+} /* Blue */
+.log-event-view {
+  color: #4caf50;
+} /* Green */

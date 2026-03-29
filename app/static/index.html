@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clickstream Split-view Tracker</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="split-container">
+      <div class="mock-website" id="mockWebsite">
+        <header>
+          <h1>Mô Phỏng FashionHub</h1>
+          <nav>
+            <a href="#" id="nav_home">Home</a>
+            <a href="#" id="nav_shop">Shop</a>
+            <a href="#" id="nav_cart"
+              >Giỏ Hàng <span id="cartCount">(0)</span></a
+            >
+          </nav>
+        </header>
+
+        <main>
+          <h2>Tất cả Sản phẩm</h2>
+          <div class="product-grid">
+            <div class="product-card">
+              <img src="https://via.placeholder.com/150" alt="Sản phẩm 1" />
+              <h3>Áo Thun Trắng</h3>
+              <p>$20.00</p>
+              <button class="add-to-cart" id="btn_cart_1">Thêm vào giỏ</button>
+            </div>
+            <div class="product-card">
+              <img
+                src="https://via.placeholder.com/150/0000FF"
+                alt="Sản phẩm 2"
+              />
+              <h3>Quần Jean Xanh</h3>
+              <p>$50.00</p>
+              <button class="add-to-cart" id="btn_cart_2">Thêm vào giỏ</button>
+            </div>
+            <div class="product-card">
+              <img
+                src="https://via.placeholder.com/150/FF0000"
+                alt="Sản phẩm 3"
+              />
+              <h3>Mũ Lưỡi Trai</h3>
+              <p>$15.00</p>
+              <button class="add-to-cart" id="btn_cart_3">Thêm vào giỏ</button>
+            </div>
+            <div class="product-card">
+              <img
+                src="https://via.placeholder.com/150/008000"
+                alt="Sản phẩm 4"
+              />
+              <h3>Áo Khoác</h3>
+              <p>$75.00</p>
+              <button class="add-to-cart" id="btn_cart_4">Thêm vào giỏ</button>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div class="live-console">
+        <div class="console-header">Live Console (Terminal)</div>
+        <div class="terminal" id="terminalLog">
+          <p class="sys-msg">[SYSTEM] Connecting to WebSocket...</p>
+          <p></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/tracker.js"></script>
+  </body>
+</html>
