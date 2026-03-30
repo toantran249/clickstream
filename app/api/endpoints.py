@@ -62,45 +62,45 @@ async def track_event(event: ClickstreamEvent):
     
     # 2. Evaluate the Mode
     if event.write_mode == "direct":
-        # async with db_write_lock:
-        #     # 1. Giả lập Database xử lý mất 0.5s cho MỖI request
-        #     await asyncio.sleep(0.5)
-        #     pool = get_db_pool()
-        #     query = """
-        #         INSERT INTO clickstream_events (session_id, user_id, event_type, url, write_mode, element_metadata)
-        #         VALUES ($1, $2, $3, $4, $5, $6::jsonb)
-        #     """
-        #     async with pool.acquire() as conn:
-        #         await conn.execute(
-        #             query, 
-        #             event.session_id, 
-        #             event.user_id, 
-        #             event.event_type, 
-        #             event.url,
-        #             event.write_mode,
-        #             json.dumps(event.element_metadata)
-        #         )
-        #     await redis_client.publish("live_console", event_data)
-        # return {"status": "inserted_directly"}
+        async with db_write_lock:
+            # 1. Giả lập Database xử lý mất 0.5s cho MỖI request
+            await asyncio.sleep(0.5)
+            pool = get_db_pool()
+            query = """
+                INSERT INTO clickstream_events (session_id, user_id, event_type, url, write_mode, element_metadata)
+                VALUES ($1, $2, $3, $4, $5, $6::jsonb)
+            """
+            async with pool.acquire() as conn:
+                await conn.execute(
+                    query, 
+                    event.session_id, 
+                    event.user_id, 
+                    event.event_type, 
+                    event.url,
+                    event.write_mode,
+                    json.dumps(event.element_metadata)
+                )
+            await redis_client.publish("live_console", event_data)
+        return {"status": "inserted_directly"}
 
         # 1. Giả lập Database xử lý mất 0.5s cho MỖI request
-        pool = get_db_pool()
-        query = """
-            INSERT INTO clickstream_events (session_id, user_id, event_type, url, write_mode, element_metadata)
-            VALUES ($1, $2, $3, $4, $5, $6::jsonb)
-        """
-        async with pool.acquire() as conn:
-            await conn.execute(
-                query, 
-                event.session_id, 
-                event.user_id, 
-                event.event_type, 
-                event.url,
-                event.write_mode,
-                json.dumps(event.element_metadata)
-            )
-        await redis_client.publish("live_console", event_data)
-        return {"status": "inserted_directly"}
+        # pool = get_db_pool()
+        # query = """
+        #     INSERT INTO clickstream_events (session_id, user_id, event_type, url, write_mode, element_metadata)
+        #     VALUES ($1, $2, $3, $4, $5, $6::jsonb)
+        # """
+        # async with pool.acquire() as conn:
+        #     await conn.execute(
+        #         query, 
+        #         event.session_id, 
+        #         event.user_id, 
+        #         event.event_type, 
+        #         event.url,
+        #         event.write_mode,
+        #         json.dumps(event.element_metadata)
+        #     )
+        # await redis_client.publish("live_console", event_data)
+        # return {"status": "inserted_directly"}
     else:
         # --- BATCH MODE: Push to Redis Queue ---
         await redis_client.rpush("clickstream_queue", event_data)
